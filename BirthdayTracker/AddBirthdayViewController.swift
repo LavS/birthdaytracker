@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  AddBirthdayViewController.swift
 //  BirthdayTracker
 //
 //  Created by Sergey Lavrov on 16.12.2018.

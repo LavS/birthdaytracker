@@ -16,7 +16,8 @@ class BirthdaysTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        dateFormatter.dateFormat = "dd MMMM yyyy г."
+        dateFormatter.dateStyle = .full
+        dateFormatter.timeStyle = .none
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -24,6 +25,12 @@ class BirthdaysTableViewController: UITableViewController {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         let fetchRequest = Birthday.fetchRequest() as NSFetchRequest<Birthday>
+        
+        // Сортировка дней рождений по алфавиту
+        let sortDescriptorLastName = NSSortDescriptor(key: "lastName", ascending: true)
+        let sortDescriptorFirstName = NSSortDescriptor(key: "firstName", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorLastName, sortDescriptorFirstName]
+        
         do{
             birthdays = try context.fetch(fetchRequest)
         } catch let error {
@@ -49,7 +56,7 @@ class BirthdaysTableViewController: UITableViewController {
         let birthday = birthdays[indexPath.row]
         let firstName = birthday.firstName ?? ""
         let lastName = birthday.lastName ?? ""
-        cell.textLabel?.text = firstName + " " + lastName
+        cell.textLabel?.text = lastName + " " + firstName
         
         if let date = birthday.birthdate as Date? {
             cell.detailTextLabel?.text = dateFormatter.string(from: date)
