@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class BirthdaysTableViewController: UITableViewController, AddBirthdayViewControllerDelegate {
+class BirthdaysTableViewController: UITableViewController {
     
     var birthdays = [Birthday]()
     let dateFormatter = DateFormatter()
@@ -47,8 +47,15 @@ class BirthdaysTableViewController: UITableViewController, AddBirthdayViewContro
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "birthdayCellIdentifier", for: indexPath)
         let birthday = birthdays[indexPath.row]
-        cell.textLabel?.text = birthday.firstName + " " + birthday.lastName
-        cell.detailTextLabel?.text = dateFormatter.string(from: birthday.birthdate)
+        let firstName = birthday.firstName ?? ""
+        let lastName = birthday.lastName ?? ""
+        cell.textLabel?.text = firstName + " " + lastName
+        
+        if let date = birthday.birthdate as Date? {
+            cell.detailTextLabel?.text = dateFormatter.string(from: date)
+        } else {
+            cell.detailTextLabel?.text = " "
+        }
         return cell
     }
 
@@ -86,19 +93,5 @@ class BirthdaysTableViewController: UITableViewController, AddBirthdayViewContro
         return true
     }
     */
-
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let navigationController = segue.destination as! UINavigationController
-        let addBirthdayViewController = navigationController.topViewController as! AddBirthdayViewController
-        addBirthdayViewController.delegate = self
-    }
     
-    // MARK: - AddBirthdayViewControllerDelegate
-    
-    func addBirthdayViewController(_addBirthdayViewController: AddBirthdayViewController, didAddBirthday birthday: Birthday) {
-        birthdays.append(birthday)
-        tableView.reloadData()
-    }
 }

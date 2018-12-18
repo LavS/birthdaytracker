@@ -9,18 +9,12 @@
 import UIKit
 import CoreData
 
-protocol AddBirthdayViewControllerDelegate{
-    func addBirthdayViewController(_addBirthdayViewController:AddBirthdayViewController, didAddBirthday birthday:Birthday)
-}
-
 class AddBirthdayViewController: UIViewController{
     
     @IBOutlet var firstNameTextField: UITextField!
     @IBOutlet var lastNameTextField: UITextField!
     @IBOutlet var birthdatePicker: UIDatePicker!
     
-    var delegate: AddBirthdayViewControllerDelegate?
-
     override func viewDidLoad() {
         super.viewDidLoad()
         birthdatePicker.maximumDate = Date();
